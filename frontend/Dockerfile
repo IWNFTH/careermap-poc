@@ -2,13 +2,13 @@ FROM node:20
 
 WORKDIR /app
 
-# 先に依存関係だけインストール
+# 依存関係インストール用に package.json 系だけ先にコピー
 COPY package.json package-lock.json* ./
+
 RUN npm install
 
-# アプリ本体
+# 残りのソースコードをコピー
 COPY . .
 
-EXPOSE 3000
-
+# Next.js 開発サーバーを起動
 CMD ["npm", "run", "dev", "--", "--port", "3000", "--hostname", "0.0.0.0"]
