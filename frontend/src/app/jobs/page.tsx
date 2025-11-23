@@ -1,28 +1,12 @@
 'use client';
 
-import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
-
-type Job = {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-};
-
-const JOBS_QUERY = gql`
-  query Jobs {
-    jobs {
-      id
-      title
-      company
-      location
-    }
-  }
-`;
+import { JobsDocument } from '@/features/jobs/graphql';
 
 export default function JobsPage() {
-  const { data, loading, error } = useQuery<{ jobs: Job[] }>(JOBS_QUERY);
+  const { data, loading, error } = useQuery(JobsDocument);
+
+  const jobs = data?.jobs ?? [];
 
   return (
     <main className="min-h-screen bg-slate-50 p-6">
@@ -50,15 +34,17 @@ export default function JobsPage() {
 
         {!loading && !error && (
           <>
-            {(!data || data.jobs.length === 0) ? (
+            {jobs.length === 0 ? (
               <p className="text-slate-600">求人データがありません。</p>
             ) : (
               <ul className="space-y-3">
-                {data.jobs.map((job) => (
+                {jobs.map((job) => (
                   <li
                     key={job.id}
                     className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => (window.location.href = `/jobs/${job.id}`)}
+                    onClick={() =>
+                      (window.location.href = `/jobs/${job.id}`)
+                    }
                   >
                     <h2 className="text-lg font-semibold">{job.title}</h2>
                     <p className="text-sm text-slate-700">
