@@ -104,7 +104,7 @@ docker compose build
 docker compose up -d db
 
 # 3. Rails DB 作成
-docker compose run --rm api bundle exec rails db:create db:migrate
+docker compose run --rm api bundle exec rails db:create db:migrate db:seed
 
 # 4. アプリ起動
 docker compose up
