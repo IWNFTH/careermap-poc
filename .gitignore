@@ -1,23 +1,30 @@
-# Node
+# ========== Node / Next.js ==========
 node_modules/
 .next/
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-error.log*
 
-# Rails
-backend/log/
-backend/tmp/
-backend/storage/
-backend/.byebug_history
-
-# Credentials
-**/*.key
+# Next Auth session or env config
 .env
 .env.local
 .env.*.local
 
-# Docker
+# ========== Rails ==========
+/backend/log/
+/backend/tmp/
+/backend/storage/
+/backend/vendor/bundle
+/.byebug_history
+
+# Rails credentials
+/backend/config/master.key
+/backend/config/credentials/*.key
+
+# ========== Docker ==========
 docker-compose.override.yml
 
-# OS junk
+# Local Dev Notes
+docs/開発メモ.md
+
+# ========== System / OS ==========
 .DS_Store
