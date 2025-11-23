@@ -24,3 +24,18 @@ export const JobDocument = gql(/* GraphQL */ `
     }
   }
 `);
+
+export const CreateJobDocument = gql(/* GraphQL */ `
+  mutation CreateJob($input: CreateJobInput!) {
+    createJob(input: $input) {
+      job {
+        id
+        title
+        company
+        location
+        url
+      }
+      errors
+    }
+  }
+`);
