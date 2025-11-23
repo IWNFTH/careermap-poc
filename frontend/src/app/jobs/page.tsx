@@ -89,7 +89,8 @@ export default function JobsPage() {
                 {jobs.map((job) => (
                   <li
                     key={job.id}
-                    className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow"
+                    className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => window.location.href = `/jobs/${job.id}`}
                   >
                     <h2 className="text-lg font-semibold">{job.title}</h2>
                     <p className="text-sm text-slate-700">
