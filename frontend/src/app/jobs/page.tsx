@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { gql } from '@apollo/client';
+import { useQuery } from '@apollo/client/react';
 
 type Job = {
   id: string;
@@ -9,10 +10,7 @@ type Job = {
   location: string;
 };
 
-const GRAPHQL_ENDPOINT =
-  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? 'http://localhost:3101/graphql';
-
-const JOBS_QUERY = `
+const JOBS_QUERY = gql`
   query Jobs {
     jobs {
       id
@@ -24,37 +22,7 @@ const JOBS_QUERY = `
 `;
 
 export default function JobsPage() {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const res = await fetch(GRAPHQL_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ query: JOBS_QUERY }),
-        });
-
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const json = await res.json();
-
-        if (json.errors) throw new Error(json.errors[0]?.message ?? 'GraphQL Error');
-
-        setJobs(json.data.jobs ?? []);
-      } catch (e: any) {
-        setError(e.message ?? 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchJobs();
-  }, []);
+  const { data, loading, error } = useQuery<{ jobs: Job[] }>(JOBS_QUERY);
 
   return (
     <main className="min-h-screen bg-slate-50 p-6">
@@ -76,21 +44,21 @@ export default function JobsPage() {
 
         {error && (
           <div className="p-4 text-red-600 border border-red-300 bg-red-50 rounded">
-            エラーが発生しました: {error}
+            エラーが発生しました: {error.message}
           </div>
         )}
 
         {!loading && !error && (
           <>
-            {jobs.length === 0 ? (
+            {(!data || data.jobs.length === 0) ? (
               <p className="text-slate-600">求人データがありません。</p>
             ) : (
               <ul className="space-y-3">
-                {jobs.map((job) => (
+                {data.jobs.map((job) => (
                   <li
                     key={job.id}
                     className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => window.location.href = `/jobs/${job.id}`}
+                    onClick={() => (window.location.href = `/jobs/${job.id}`)}
                   >
                     <h2 className="text-lg font-semibold">{job.title}</h2>
                     <p className="text-sm text-slate-700">
