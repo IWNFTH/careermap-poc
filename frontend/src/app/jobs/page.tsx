@@ -39,16 +39,11 @@ export default function JobsPage() {
           body: JSON.stringify({ query: JOBS_QUERY }),
         });
 
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const json = await res.json();
 
-        if (json.errors) {
-          console.error(json.errors);
-          throw new Error(json.errors[0]?.message ?? 'GraphQL Error');
-        }
+        if (json.errors) throw new Error(json.errors[0]?.message ?? 'GraphQL Error');
 
         setJobs(json.data.jobs ?? []);
       } catch (e: any) {
@@ -61,39 +56,52 @@ export default function JobsPage() {
     fetchJobs();
   }, []);
 
-  if (loading) {
-    return <p className="p-4">読み込み中です…</p>;
-  }
-
-  if (error) {
-    return (
-      <div className="p-4 text-red-600">
-        エラーが発生しました: {error}
-      </div>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-slate-50 p-6">
-      <h1 className="text-2xl font-bold mb-4">求人一覧 (GraphQL /jobs)</h1>
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <header className="mb-6 flex items-center justify-between">
+          <h1 className="text-2xl font-bold">求人一覧 (GraphQL /jobs)</h1>
 
-      {jobs.length === 0 ? (
-        <p>求人データがありません。</p>
-      ) : (
-        <ul className="space-y-3">
-          {jobs.map((job) => (
-            <li
-              key={job.id}
-              className="rounded border bg-white p-4 shadow-sm"
-            >
-              <h2 className="text-lg font-semibold">{job.title}</h2>
-              <p className="text-sm text-slate-700">
-                {job.company} / {job.location}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )}
+          <a
+            href="/jobs/new"
+            className="text-sm text-blue-700 hover:underline"
+          >
+            ＋ 新規登録
+          </a>
+        </header>
+
+        {/* Content */}
+        {loading && <p className="p-4">読み込み中です…</p>}
+
+        {error && (
+          <div className="p-4 text-red-600 border border-red-300 bg-red-50 rounded">
+            エラーが発生しました: {error}
+          </div>
+        )}
+
+        {!loading && !error && (
+          <>
+            {jobs.length === 0 ? (
+              <p className="text-slate-600">求人データがありません。</p>
+            ) : (
+              <ul className="space-y-3">
+                {jobs.map((job) => (
+                  <li
+                    key={job.id}
+                    className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <h2 className="text-lg font-semibold">{job.title}</h2>
+                    <p className="text-sm text-slate-700">
+                      {job.company} / {job.location}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+      </div>
     </main>
   );
 }
