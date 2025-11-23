@@ -34,14 +34,14 @@ export default function JobDetailPage() {
     <main className="min-h-screen bg-slate-50 p-6">
       <div className="max-w-2xl mx-auto space-y-4">
         <header className="border-b pb-4">
-          <h1 className="text-2xl font-bold">{job.title}</h1>
+          <h1 className="text-2xl font-bold text-slate-900">{job.title}</h1>
           <p className="text-sm text-slate-700">
             {job.company} / {job.location}
           </p>
         </header>
 
         <section className="bg-white rounded shadow-sm p-4">
-          <h2 className="font-semibold mb-2">求人詳細</h2>
+          <h2 className="font-semibold mb-2 text-slate-500">求人詳細</h2>
           <p className="whitespace-pre-wrap text-slate-800">
             {job.description}
           </p>

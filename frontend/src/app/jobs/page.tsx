@@ -13,7 +13,7 @@ export default function JobsPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <header className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">求人一覧 (GraphQL /jobs)</h1>
+          <h1 className="text-2xl font-bold text-slate-900">求人一覧 (GraphQL /jobs)</h1>
 
           <a
             href="/jobs/new"
@@ -41,7 +41,7 @@ export default function JobsPage() {
                 {jobs.map((job) => (
                   <li
                     key={job.id}
-                    className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                    className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer text-slate-900"
                     onClick={() =>
                       (window.location.href = `/jobs/${job.id}`)
                     }

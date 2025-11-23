@@ -70,7 +70,7 @@ export default function NewJobPage() {
         {/* ヘッダー */}
         <header className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">求人登録 (GraphQL /createJob)</h1>
+            <h1 className="text-2xl font-bold text-slate-900">求人登録 (GraphQL /createJob)</h1>
             <p className="mt-1 text-sm text-slate-600">
               フロント → GraphQL → Rails → MySQL までの一連の流れを確認するためのフォーム
             </p>
@@ -89,12 +89,12 @@ export default function NewJobPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* タイトル */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-slate-900 font-medium text-slate-700 mb-1">
                 タイトル
               </label>
               <input
-                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="例）Next.js × Rails インターン"
+                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="例）Next.js × Rails"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -107,7 +107,7 @@ export default function NewJobPage() {
                 企業名
               </label>
               <input
-                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="例）Sample Inc."
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
@@ -121,7 +121,7 @@ export default function NewJobPage() {
                 勤務地
               </label>
               <input
-                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="例）東京（リモート可）"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
@@ -135,7 +135,7 @@ export default function NewJobPage() {
                 募集ページURL
               </label>
               <input
-                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="https://example.com/jobs/123"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
@@ -148,8 +148,8 @@ export default function NewJobPage() {
                 詳細説明
               </label>
               <textarea
-                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[120px]"
-                placeholder="募集要項の概要やアピールポイントなど"
+                className="block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[120px]"
+                placeholder="募集要項の概要"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
