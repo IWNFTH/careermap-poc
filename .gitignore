@@ -1,0 +1,23 @@
+# Node
+node_modules/
+.next/
+npm-debug.log
+yarn-error.log
+
+# Rails
+backend/log/
+backend/tmp/
+backend/storage/
+backend/.byebug_history
+
+# Credentials
+**/*.key
+.env
+.env.local
+.env.*.local
+
+# Docker
+docker-compose.override.yml
+
+# OS junk
+.DS_Store

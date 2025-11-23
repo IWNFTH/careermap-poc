@@ -1,0 +1,92 @@
+<svg width="820" height="420" viewBox="0 0 820 420" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title { font: bold 20px sans-serif; fill: #111; }
+    .label { font: 14px sans-serif; fill: #111; }
+    .small { font: 12px sans-serif; fill: #333; }
+    .box { fill: #f9fafb; stroke: #cbd5f5; stroke-width: 1.5; rx: 8; ry: 8; }
+    .db  { fill: #fdf2f2; stroke: #fecaca; stroke-width: 1.5; rx: 8; ry: 8; }
+    .cloud { fill: #ecfeff; stroke: #bae6fd; stroke-width: 1.5; rx: 16; ry: 16; }
+    .arrow { stroke: #4b5563; stroke-width: 1.8; marker-end: url(#arrowhead); }
+  </style>
+
+  <!-- 矢印マーカー -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4b5563"></polygon>
+    </marker>
+  </defs>
+
+  <!-- タイトル -->
+  <text x="20" y="32" class="title">
+    学生向け就活ミニアプリ PoC – アーキテクチャ概要
+  </text>
+
+  <!-- フロントエンドボックス -->
+  <rect x="40" y="70" width="330" height="240" class="box"></rect>
+  <text x="55" y="95" class="label">Frontend (Next.js 15 / React 18 / TS)</text>
+
+  <!-- フロント詳細 -->
+  <text x="60" y="125" class="small">
+    - Next.js 15.2.3 (App Router)
+  </text>
+  <text x="60" y="145" class="small">
+    - Apollo Client / graphql-codegen
+  </text>
+  <text x="60" y="165" class="small">
+    - Redux Toolkit（状態管理）
+  </text>
+  <text x="60" y="185" class="small">
+    - Tailwind CSS / Radix UI（UI）
+  </text>
+  <text x="60" y="205" class="small">
+    - React Hook Form + Zod（フォーム + バリデーション）
+  </text>
+  <text x="60" y="225" class="small">
+    - NextAuth（認証）
+  </text>
+  <text x="60" y="245" class="small">
+    - Storybook / ESLint / Prettier
+  </text>
+
+  <!-- Rails API ボックス -->
+  <rect x="450" y="120" width="310" height="120" class="box"></rect>
+  <text x="465" y="145" class="label">
+    Backend API (Ruby on Rails 6.0.2)
+  </text>
+  <text x="470" y="170" class="small">
+    - GraphQL エンドポイント /graphql
+  </text>
+  <text x="470" y="190" class="small">
+    - graphql-ruby
+  </text>
+  <text x="470" y="210" class="small">
+    - ドメインモデル: Company / Job / Interest / Student
+  </text>
+
+  <!-- DB ボックス -->
+  <rect x="495" y="260" width="110" height="60" class="db"></rect>
+  <text x="505" y="285" class="label">MySQL 8</text>
+  <text x="505" y="305" class="small">永続化層</text>
+
+  <!-- Firebase ボックス -->
+  <rect x="640" y="260" width="120" height="60" class="cloud"></rect>
+  <text x="650" y="285" class="label">Firebase</text>
+  <text x="650" y="305" class="small">Analytics / ログ</text>
+
+  <!-- フロント → Rails 矢印 -->
+  <line x1="370" y1="190" x2="450" y2="190" class="arrow"></line>
+  <text x="380" y="210" class="small">GraphQL</text>
+
+  <!-- Rails → DB 矢印 -->
+  <line x1="555" y1="240" x2="550" y2="260" class="arrow"></line>
+
+  <!-- Rails → Firebase 矢印 （イベント送信イメージ）-->
+  <line x1="640" y1="240" x2="690" y2="260" class="arrow" stroke-dasharray="4 3"></line>
+  <text x="615" y="235" class="small">イベント / ログ</text>
+
+  <!-- ユーザー（学生）アイコン -->
+  <circle cx="90" cy="345" r="22" fill="#e5f3ff" stroke="#93c5fd" stroke-width="1.5"></circle>
+  <text x="75" y="350" class="small">学生</text>
+  <line x1="112" y1="345" x2="150" y2="300" class="arrow"></line>
+  <text x="120" y="330" class="small">ブラウザアクセス</text>
+</svg>
