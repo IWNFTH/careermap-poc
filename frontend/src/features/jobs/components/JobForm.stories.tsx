@@ -19,3 +19,22 @@ export const Empty: Story = {
     },
   },
 };
+
+export const WithDefaultValues: Story = {
+  args: {
+    loading: false,
+    message: 'バリデーションや見た目の確認用のサンプルです。',
+    defaultValues: {
+      title: 'Next.js × Rails バックエンドエンジニア',
+      company: 'Sample Inc.',
+      location: '東京（リモート可）',
+      url: 'https://example.com/jobs/123',
+      description: 'GraphQL / Apollo Client / React Hook Form を使う案件です。',
+    },
+    onSubmit: async (values: JobFormValues) => {
+      // eslint-disable-next-line no-console
+      console.log('submit: ', values);
+    },
+    submitLabel: '更新する',
+  },
+};
