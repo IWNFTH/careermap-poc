@@ -1,21 +1,82 @@
-'use client';
+"use client";
 
-import { useQuery } from '@apollo/client';
-import { MeDocument } from '@/graphql/graphql';
+import { useEffect, useState } from "react";
+import { gql } from "@apollo/client";
+import { apolloClient } from "../apollo-provider";
+
+const ME_QUERY = gql`
+  query Me {
+    me {
+      id
+      name
+      email
+    }
+  }
+`;
+
+type MeData = {
+  me: {
+    id: string;
+    name: string;
+    email: string;
+  } | null;
+};
 
 export function DashboardContent() {
-  const { data, loading, error } = useQuery(MeDocument);
+  const [data, setData] = useState<MeData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  if (loading) return <p>読み込み中...</p>;
-  if (error) return <p className="text-red-500">エラー: {error.message}</p>;
+  useEffect(() => {
+    let cancelled = false;
 
-  if (!data?.me) return <p>未ログイン or ユーザー情報なし</p>;
+    (async () => {
+      try {
+        const result = await apolloClient.query<MeData>({
+          query: ME_QUERY,
+          fetchPolicy: "network-only",
+        });
+        if (!cancelled) {
+          setData(result.data);
+          setError(null);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          setError(e as Error);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (loading) {
+    return <p>ユーザー情報を読み込み中...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="text-sm text-red-600">
+        ユーザー情報の取得に失敗しました: {error.message}
+      </p>
+    );
+  }
+
+  if (!data?.me) {
+    return <p>ユーザー情報が取得できませんでした。（未ログインの可能性）</p>;
+  }
 
   return (
-    <div className="space-y-1">
-      <p>ID: {data.me.id}</p>
+    <div className="space-y-1 text-sm">
+      <p>ログイン中ユーザーID: {data.me.id}</p>
       <p>名前: {data.me.name}</p>
-      <p>Email: {data.me.email}</p>
+      <p>メールアドレス: {data.me.email}</p>
     </div>
   );
 }
