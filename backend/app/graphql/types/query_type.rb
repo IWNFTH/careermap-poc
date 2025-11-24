@@ -45,5 +45,12 @@ module Types
     def job(id:)
       Job.find_by(id: id)
     end
+
+    field :me, Types::UserType, null: true,
+          description: 'ログイン中ユーザー情報'
+
+    def me
+      context[:current_user]
+    end
   end
 end

@@ -74,6 +74,8 @@ export type Query = {
   job?: Maybe<Job>;
   /** 求人一覧を返します */
   jobs: Array<Job>;
+  /** ログイン中ユーザー情報 */
+  me?: Maybe<User>;
   /** An example field added by the generator */
   testField: Scalars['String']['output'];
 };
@@ -102,6 +104,13 @@ export type UpdateJobPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   errors: Array<Scalars['String']['output']>;
   job?: Maybe<Job>;
+};
+
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type JobsQueryVariables = Exact<{ [key: string]: never; }>;
