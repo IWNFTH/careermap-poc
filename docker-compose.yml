@@ -42,6 +42,7 @@ services:
       NEXT_TELEMETRY_DISABLED: "1"
     ports:
       - "3100:3000" # ローカル 3100 → Next.js 3000
+      - "6006:6006" # ローカル 6006 → Storybook 6006
     volumes:
       - ./frontend:/app
       - /app/node_modules

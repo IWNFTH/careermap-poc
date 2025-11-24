@@ -2,6 +2,7 @@
 
 import { useQuery } from '@apollo/client/react';
 import { JobsDocument } from '@/features/jobs/graphql';
+import { JobCard } from '@/features/jobs/components/JobCard';
 
 export default function JobsPage() {
   const { data, loading, error } = useQuery(JobsDocument);
@@ -35,21 +36,12 @@ export default function JobsPage() {
         {!loading && !error && (
           <>
             {jobs.length === 0 ? (
-              <p className="text-slate-600">求人データがありません。</p>
+              <p className="text-slate-800">求人データがありません。</p>
             ) : (
               <ul className="space-y-3">
-                {jobs.map((job) => (
-                  <li
-                    key={job.id}
-                    className="rounded border bg-white p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer text-slate-900"
-                    onClick={() =>
-                      (window.location.href = `/jobs/${job.id}`)
-                    }
-                  >
-                    <h2 className="text-lg font-semibold">{job.title}</h2>
-                    <p className="text-sm text-slate-700">
-                      {job.company} / {job.location}
-                    </p>
+                {jobs.map((job: any) => (
+                  <li key={job.id}>
+                    <JobCard job={job} />
                   </li>
                 ))}
               </ul>

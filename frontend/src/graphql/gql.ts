@@ -17,11 +17,13 @@ type Documents = {
     "\n  query Jobs {\n    jobs {\n      id\n      title\n      company\n      location\n    }\n  }\n": typeof types.JobsDocument,
     "\n  query Job($id: ID!) {\n    job(id: $id) {\n      id\n      title\n      company\n      location\n      description\n    }\n  }\n": typeof types.JobDocument,
     "\n  mutation CreateJob($input: CreateJobInput!) {\n    createJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n      }\n      errors\n    }\n  }\n": typeof types.CreateJobDocument,
+    "\n  mutation UpdateJob($input: UpdateJobInput!) {\n    updateJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n        description\n      }\n      errors\n    }\n  }\n": typeof types.UpdateJobDocument,
 };
 const documents: Documents = {
     "\n  query Jobs {\n    jobs {\n      id\n      title\n      company\n      location\n    }\n  }\n": types.JobsDocument,
     "\n  query Job($id: ID!) {\n    job(id: $id) {\n      id\n      title\n      company\n      location\n      description\n    }\n  }\n": types.JobDocument,
     "\n  mutation CreateJob($input: CreateJobInput!) {\n    createJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n      }\n      errors\n    }\n  }\n": types.CreateJobDocument,
+    "\n  mutation UpdateJob($input: UpdateJobInput!) {\n    updateJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n        description\n      }\n      errors\n    }\n  }\n": types.UpdateJobDocument,
 };
 
 /**
@@ -50,6 +52,10 @@ export function gql(source: "\n  query Job($id: ID!) {\n    job(id: $id) {\n    
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation CreateJob($input: CreateJobInput!) {\n    createJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n      }\n      errors\n    }\n  }\n"): (typeof documents)["\n  mutation CreateJob($input: CreateJobInput!) {\n    createJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n      }\n      errors\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateJob($input: UpdateJobInput!) {\n    updateJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n        description\n      }\n      errors\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateJob($input: UpdateJobInput!) {\n    updateJob(input: $input) {\n      job {\n        id\n        title\n        company\n        location\n        url\n        description\n      }\n      errors\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

@@ -22,15 +22,33 @@ type JobFormProps = {
   onSubmit: (values: JobFormValues) => void | Promise<void>;
   loading?: boolean;
   message?: string;
+  /** 編集時などに初期値を渡す */
+  defaultValues?: Partial<JobFormValues>;
+  /** ボタンのラベル（登録する / 更新する など） */
+  submitLabel?: string;
 };
 
-export function JobForm({ onSubmit, loading, message }: JobFormProps) {
+export function JobForm({
+  onSubmit,
+  loading,
+  message,
+  defaultValues,
+  submitLabel = '登録する',
+}: JobFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<JobFormValues>({
     resolver: zodResolver(jobSchema),
+    defaultValues: {
+      title: '',
+      company: '',
+      location: '',
+      url: '',
+      description: '',
+      ...defaultValues, // ← 渡された初期値で上書き
+    },
   });
 
   return (
@@ -115,7 +133,7 @@ export function JobForm({ onSubmit, loading, message }: JobFormProps) {
             disabled={loading}
             className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 disabled:bg-blue-300"
           >
-            {loading ? '送信中です…' : '登録する'}
+            {loading ? '送信中です…' : submitLabel}
           </button>
         </div>
       </form>

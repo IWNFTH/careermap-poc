@@ -2,13 +2,14 @@
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@apollo/client/react';
-import { JobDocument } from '@/features/jobs/graphql';
+import { JobDocument } from '@/graphql/graphql';
+import { JobEditDialog } from '@/features/jobs/components/JobEditDialog';
 
 export default function JobDetailPage() {
   const params = useParams<{ id: string }>();
   const id = params.id;
 
-  const { data, loading, error } = useQuery(JobDocument, {
+  const { data, loading, error, refetch } = useQuery(JobDocument, {
     variables: { id },
   });
 
@@ -33,11 +34,21 @@ export default function JobDetailPage() {
   return (
     <main className="min-h-screen bg-slate-50 p-6">
       <div className="max-w-2xl mx-auto space-y-4">
-        <header className="border-b pb-4">
-          <h1 className="text-2xl font-bold text-slate-900">{job.title}</h1>
-          <p className="text-sm text-slate-700">
-            {job.company} / {job.location}
-          </p>
+        <header className="border-b pb-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">{job.title}</h1>
+            <p className="text-sm text-slate-700">
+              {job.company} / {job.location}
+            </p>
+          </div>
+
+          {/* ↓ 編集モーダル */}
+          <JobEditDialog
+            job={job}
+            onUpdated={() => {
+              refetch(); // 更新後に最新データ取得
+            }}
+          />
         </header>
 
         <section className="bg-white rounded shadow-sm p-4">
@@ -45,6 +56,18 @@ export default function JobDetailPage() {
           <p className="whitespace-pre-wrap text-slate-800">
             {job.description}
           </p>
+
+          {job.url && (
+            <p className="mt-3">
+              <a
+                href={job.url}
+                className="text-blue-700 underline"
+                target="_blank"
+              >
+                募集ページを見る ↗
+              </a>
+            </p>
+          )}
         </section>
 
         <a href="/jobs" className="text-sm text-blue-700 hover:underline">
