@@ -1,3 +1,14 @@
+# frozen_string_literal: true
+
+puts "Seeding user..."
+
+User.find_or_create_by!(email: "test@example.com") do |user|
+  user.name = "admin"
+  user.password = "password"
+end
+
+puts "User created or already exists."
+
 puts "Seeding jobs..."
 
 Job.find_or_create_by!(title: "Next.js × Rails") do |job|
