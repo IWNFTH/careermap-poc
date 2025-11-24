@@ -39,3 +39,19 @@ export const CreateJobDocument = gql(/* GraphQL */ `
     }
   }
 `);
+
+export const UpdateJobDocument = gql`
+  mutation UpdateJob($input: UpdateJobInput!) {
+    updateJob(input: $input) {
+      job {
+        id
+        title
+        company
+        location
+        url
+        description
+      }
+      errors
+    }
+  }
+`;

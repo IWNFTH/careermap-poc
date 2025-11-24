@@ -3,6 +3,7 @@
 module Types
   class MutationType < Types::BaseObject
     field :create_job, mutation: Mutations::CreateJob
+    field :update_job, mutation: Mutations::UpdateJob
     # TODO: remove me
     field :test_field, String, null: false,
       description: "An example field added by the generator"
