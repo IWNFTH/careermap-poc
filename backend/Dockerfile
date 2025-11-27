@@ -14,6 +14,12 @@ RUN bundle install
 # アプリ本体
 COPY . .
 
-EXPOSE 3000
+COPY entrypoint.sh /usr/bin/
 
-CMD ["bash", "-c", "bundle exec rails s -b 0.0.0.0 -p 3000"]
+RUN chmod +x /usr/bin/entrypoint.sh
+
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["rails", "server", "-b", "0.0.0.0"]
+
+EXPOSE 3000

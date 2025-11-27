@@ -10,15 +10,21 @@ services:
       MYSQL_USER: app
       MYSQL_PASSWORD: app_password
     ports:
-      - "3307:3306" # ローカルは 3307, コンテナ内 3306
+      - "3307:3306"
     volumes:
       - db-data:/var/lib/mysql
+    healthcheck: # DBの起動チェック
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   api:
     build: ./backend
     command: bundle exec rails s -b 0.0.0.0 -p 3000
     depends_on:
-      - db
+      db:
+        condition: service_healthy # DBの準備完了を待つ
     environment:
       RAILS_ENV: development
       DB_HOST: db
@@ -26,7 +32,7 @@ services:
       DB_PASSWORD: app_password
       DB_NAME: careermap_poc_development
     ports:
-      - "3101:3000" # ローカル 3101 → Rails 3000
+      - "3101:3000"
     volumes:
       - ./backend:/app
     stdin_open: true
@@ -40,9 +46,10 @@ services:
     environment:
       NEXT_PUBLIC_GRAPHQL_ENDPOINT: http://localhost:3101/graphql
       NEXT_TELEMETRY_DISABLED: "1"
+      API_INTERNAL_URL: http://api:3000
     ports:
-      - "3100:3000" # ローカル 3100 → Next.js 3000
-      - "6006:6006" # ローカル 6006 → Storybook 6006
+      - "3100:3000"
+      - "6006:6006"
     volumes:
       - ./frontend:/app
       - /app/node_modules
