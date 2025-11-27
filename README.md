@@ -110,14 +110,16 @@ DB
 
 Infra / Dev
 - Docker
+- Make (Task Runner)
 ```
 
 ---
 
 ## 5. セットアップ手順
 
-このアプリは **Next.js（App Router） + NextAuth + Apollo Client** と  
-**Rails + GraphQL + JWT + MySQL** を **Docker Compose** で動かす構成です。
+このアプリは Next.js（App Router） + NextAuth + Apollo Client と
+Rails + GraphQL + JWT + MySQL を Docker Compose で動かす構成です。
+コマンド一発で環境構築が完了するように Makefile を整備しています。
 
 ---
 
@@ -125,96 +127,39 @@ Infra / Dev
 
 - Docker Desktop
 - Git
+- Make (macOS/Linuxは標準搭載。WindowsはWSL推奨)
 
 ---
 
-### 初回セットアップ
+### クイックスタート
 
+# 1. クローン
 ```sh
 git clone https://github.com/IWNFTH/careermap-poc.git
 cd careermap-poc
 ```
 
----
-
-### 1️. `.env` 設定
-
-#### フロントエンド (Next.js)
-
+# 2. 初期セットアップ＆起動（これだけでOK）
 ```sh
-cp frontend/.env.example frontend/.env.local
+make init
 ```
 
-`.env.local` 内の重要値
+make init コマンドにより、以下の処理が自動で行われます：
+- 環境変数ファイル（.env）の生成
+- Docker イメージのビルド
+- コンテナ起動（MySQLの起動完了まで自動待機）
+- データベース作成・マイグレーション・Seedデータ投入
 
-```env
-NEXT_PUBLIC_GRAPHQL_ENDPOINT=http://api:3000/graphql
-NEXTAUTH_URL=http://localhost:3100
-NEXTAUTH_SECRET=dev-secret-change-me
-```
+# 3. 動作確認フロー
+コマンド完了後、以下のURLで動作を確認できます。
 
-#### バックエンド (Rails)
+| 内容                   | URL                            | 
+| ---------------------- | ------------------------------ | 
+| Next.js フロントエンド | http://localhost:3100          | 
+| ログイン画面           | http://localhost:3100/login    | 
+| GraphQL UI（GraphiQL） | http://localhost:3101/graphiql | 
 
-```sh
-cp backend/.env.example backend/.env
-```
-
-`.env` 内の重要値
-
-```env
-DATABASE_HOST=db
-DATABASE_USERNAME=root
-DATABASE_PASSWORD=password
-DATABASE_NAME=careermap_development
-
-JWT_SECRET=dev-jwt-secret-change-me
-```
-
----
-
-### 2️. Docker ビルド
-
-```sh
-docker compose build
-```
-
----
-
-### 3️. DB 初期化（Rails）
-
-```sh
-docker compose run --rm api bundle exec rails db:create db:migrate db:seed
-```
-
-`db:seed` により、以下のテストユーザーが作成されます：
-
-| 項目       | 値                  |
-| -------- | ------------------ |
-| Email    | `test@example.com` |
-| Password | `password`         |
-| Name     | `admin`            |
-
----
-
-### 4️. アプリケーション起動
-
-```sh
-docker compose up
-```
-
----
-
-### 5️. 動作確認フロー
-
-1. アプリ起動後、ブラウザでアクセス：
-
-| 内容 | URL |
-|------|-----|
-| Next.js フロントエンド | http://localhost:3100 |
-| ログイン画面 | http://localhost:3100/login |
-| GraphQL UI（GraphiQL） | http://localhost:3101/graphiql |
-
-👤 ログイン用テストユーザー：
+ログイン用テストユーザー（Seedで自動作成されます）
 
 | Email | Password |
 |-------|----------|
@@ -222,16 +167,24 @@ docker compose up
 
 ---
 
-### 🔧 よくあるトラブル
+# 4. 運用コマンド (Makefile)
+開発中は以下のショートカットコマンドを利用できます。
 
-| 状況                            | 解決策                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------- |
-| `Next.js が GraphQL にアクセスできない` | `.env.local` の `NEXT_PUBLIC_GRAPHQL_ENDPOINT=http://api:3000/graphql` を確認 |
-| `ログインできない`                    | DB 未作成の可能性 → `docker compose run --rm api rails db:migrate db:seed`       |
-| `web コンテナが落ちる`                | `docker compose logs web` で確認                                             |
-| GraphiQL にアクセスできない            | URL: `http://localhost:3101/graphiql` が正しいか確認                             |
+| コマンド      | 説明                                                           | 
+| ------------- | -------------------------------------------------------------- | 
+| make init     | 初回セットアップ（環境変数作成・ビルド・DB初期化まで一括実行） | 
+| make up       | コンテナ起動（DBヘルスチェック待機付き）                       | 
+| make down     | コンテナ停止                                                   | 
+| make reset    | 全データ削除 して最初から作り直す（DBリセット含む）            | 
+| make db-setup | DB作成・Migrate・Seedのみ実行（起動中に使用）                  | 
 
----
+# 5. よくあるトラブル
+
+| 状況                | 解決策                                                                            | 
+| ------------------- | --------------------------------------------------------------------------------- | 
+| make コマンドがない | Windows等の場合は docker compose up -d 後、手動でDBセットアップを行ってください。 | 
+| ログインできない    | make reset で環境を再構築してください。                                           | 
+| GraphiQL が開かない | http://localhost:3101/graphiql を確認してください。                               | 
 
 ### 🧹 開発中の便利コマンド
 
@@ -318,5 +271,6 @@ StorybookでUI/状態遷移確認可能。
 * GraphQL + codegen による型安全な開発
 * App Router設計とServer/Client Component分離の実践
 * Rails側責務とフロントBFF責務の整理の重要性
+* Docker Compose + Makefile による環境構築の完全自動化
 
 ---
