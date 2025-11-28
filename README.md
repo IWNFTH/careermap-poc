@@ -139,7 +139,8 @@ git clone https://github.com/IWNFTH/careermap-poc.git
 cd careermap-poc
 ```
 
-# 2. 初期セットアップ＆起動（これだけでOK）
+# 2. 初期セットアップ＆起動
+下記コマンドにて、ビルド〜ブラウザに表示まで自動で行います。
 ```sh
 make init
 ```

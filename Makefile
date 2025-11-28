@@ -9,6 +9,7 @@ init:
 	@echo "🛠 Setting up database..."
 	@docker compose exec api bundle exec rails db:prepare db:seed
 	@echo "✅ Setup complete! Access http://localhost:3100"
+	@open "http://localhost:3100" || echo "⚠️ Auto-open failed. Please open http://localhost:3100 manually."
 
 # 環境変数コピー
 setup-env:
